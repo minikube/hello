@@ -38,7 +38,7 @@ endif
 	@echo "$$VALUES" > helm/values.yaml
 	
 
-.local-deploy: .echo .update-helm-values
+.deploy-local: .echo .update-helm-values
 	sudo docker build -t $(APP.MS.IMAGE):latest .
 	$(CREATE_NAMESPACE)
 	$(RM) helm/templates/*
