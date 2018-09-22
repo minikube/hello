@@ -38,6 +38,13 @@ endif
 	@echo "$$VALUES" > helm/values.yaml
 	
 
+.local-deploy: .echo .update-helm-values
+	sudo docker build -t $(APP.MS.IMAGE):latest .
+	$(CREATE_NAMESPACE)
+	$(RM) helm/templates/*
+	cp helm/tmpls/deployment.yaml helm/templates/
+	helm upgrade -i $(RELEASE) ./helm --namespace $(APP.NAMESPACE)
+	
 .release-build:
 	echo "version: $(APP.MS.VERSION)"
 	#replace version in version file if APP.MS.VERSION variable is passed in  make commad e.g. 'make .release APP.MS.VERSION=1.0.2'
